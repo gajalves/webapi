@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebApi.Models
 {
-    [Table("Produtos")]
+    //[Table("Produtos")]
     public class Produto
     {
         [Key]
@@ -19,13 +19,13 @@ namespace WebApi.Models
 
         [Required]
         [MaxLength(300)]
-        public int Descricao { get; set; }
+        public string Descricao { get; set; }
 
         [Required]        
         public decimal Preco { get; set; }
 
         [Required]
-        [MaxLength(80)]
+        [MaxLength(300)]
         public string ImageUrl { get; set; }
 
         public float Estoque { get; set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WebApi.Models
 {
-    [Table("Categorias")]
+    //[Table("Categorias")]
     public class Categoria
     {
         public Categoria()
