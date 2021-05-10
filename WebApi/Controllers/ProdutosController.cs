@@ -26,7 +26,7 @@ namespace WebApi.Controllers
             return __context.Produtos.AsNoTracking().ToList();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetProduto")]
         public ActionResult<Produto> GetProdutoById(int id)
         {
             Produto prod = __context.Produtos.AsNoTracking().Where(produto => produto.ProdutoId == id).FirstOrDefault();
@@ -40,5 +40,22 @@ namespace WebApi.Controllers
                 return prod;
             }
         }
+
+        [HttpPost]
+        public ActionResult PostProduto([FromBody]Produto prod)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
+            __context.Produtos.Add(prod);
+            __context.SaveChanges();
+
+            return new CreatedAtRouteResult("GetProduto", 
+                new { id = prod.ProdutoId }, prod
+                );
+        }
+
     }
 }
