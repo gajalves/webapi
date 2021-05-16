@@ -21,14 +21,34 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Categoria>> Get()
+        public ActionResult<IEnumerable<Categoria>> GetCategorias([FromQuery(Name = "produtos")] bool produtos)
         {
-            var categorias = __context.Categorias.AsNoTracking().ToList();
-            return Ok(new { 
+            List<Categoria> categorias = new List<Categoria>();
+
+            if (produtos)
+            {
+                categorias = __context.Categorias.Include(prod => prod.Produtos).ToList();
+            }
+            else
+            {
+                categorias = __context.Categorias.AsNoTracking().ToList();
+            }
+            return Ok(new
+            {
                 Status = "Ok",
                 Categorias = categorias
             });
         }
+
+        //[HttpGet]
+        //public ActionResult<IEnumerable<Categoria>> GetCategorias()
+        //{
+        //    var categorias = __context.Categorias.AsNoTracking().ToList();
+        //    return Ok(new { 
+        //        Status = "Ok",
+        //        Categorias = categorias
+        //    });
+        //}
 
         [HttpGet("{idCategoria}", Name = "GetCategoria")]
         public ActionResult<Categoria> GetById(int idCategoria)
@@ -113,9 +133,7 @@ namespace WebApi.Controllers
                 {
                     return BadRequest();
                 }
-            }
-
-            return Ok();
+            }            
         }
     }
 }
