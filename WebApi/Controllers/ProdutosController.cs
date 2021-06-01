@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace WebApi.Controllers
     public class ProdutosController : ControllerBase
     {
         private readonly AppDbContext __context;
+        private readonly ILogger __logger;
 
-        public ProdutosController(AppDbContext contexto)
+        public ProdutosController(AppDbContext contexto, ILogger<ProdutosController> log)
         {
             __context = contexto;
+            __logger = log;
         }
 
         [HttpGet]
@@ -26,9 +29,13 @@ namespace WebApi.Controllers
             return __context.Produtos.AsNoTracking().ToList();
         }
 
-        [HttpGet("{prodId}", Name = "GetProduto")]
+        [HttpGet("{prodId}", Name = "GetProdutoByid")]
         public ActionResult<Produto> GetProdutoById(int prodId)
         {
+            __logger.LogInformation("==================================");
+            __logger.LogInformation("Produto id: " + prodId);
+            __logger.LogInformation("==================================");
+
             Produto prod = __context.Produtos.AsNoTracking().Where(produto => produto.ProdutoId == prodId).FirstOrDefault();
 
             if (prod == null)
@@ -37,7 +44,7 @@ namespace WebApi.Controllers
             }
             else
             {
-                return prod;
+                return Ok(prod);
             }
         }
 
@@ -53,7 +60,7 @@ namespace WebApi.Controllers
             __context.Produtos.Add(prod);
             __context.SaveChanges();
 
-            return new CreatedAtRouteResult("GetProduto", 
+            return new CreatedAtRouteResult("GetProdutoById", 
                 new { id = prod.ProdutoId }, prod
                 );
         }
@@ -61,7 +68,7 @@ namespace WebApi.Controllers
         [HttpPut("{prodId}")]
         public ActionResult PutProduto(int prodId, [FromBody] Produto prod)
         {
-
+            
             if ((prodId != prod.ProdutoId) || (prodId == 0 || prod.ProdutoId == 0)) { return BadRequest(); }
 
 

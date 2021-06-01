@@ -18,11 +18,11 @@ namespace WebApi.Models
         [Key]
         public int CategoriaId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "É necessário informar o campo nome")]
         [MaxLength(80)]
         public string Nome { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "É necessário informar o campo imageurl")]
         [MaxLength(300)]
         public string ImageUrl { get; set; }
 

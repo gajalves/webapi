@@ -13,18 +13,18 @@ namespace WebApi.Models
         [Key]
         public int ProdutoId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "É necessário informar o campo nome")]
         [MaxLength(80)]
         public string Nome { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "É necessário informar o campo descricao")]
         [MaxLength(300)]
         public string Descricao { get; set; }
 
-        [Required]        
+        [Required(ErrorMessage = "É necessário informar o campo preco")]
         public decimal Preco { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "É necessário informar o campo imageurl")]
         [MaxLength(300)]
         public string ImageUrl { get; set; }
 
